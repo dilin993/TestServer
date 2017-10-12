@@ -17,6 +17,9 @@ Mat getMatFromBitBuffer(unsigned char *buffer)
     int rows = (buffer[1] << 8) + buffer[0];
     int cols = (buffer[3] << 8) + buffer[2];
 
+    if(rows==0 || cols==0)
+        return Mat();
+
     Mat binMask(rows,cols,CV_8UC1);
 
     int bytePos = 4;
@@ -59,15 +62,17 @@ int main()
         {
             boost::system::error_code error;
             boost::array<unsigned char, N> buf;
-            size_t len = socket.read_some(boost::asio::buffer(buf), error);
-
-            std::cout << boost::system::system_error(error).what() << std::endl;
-
+//            size_t len = socket.read_some(boost::asio::buffer(buf,N), error);
+            size_t len = boost::asio::read(socket,boost::asio::buffer(buf,N), error);
+            std::cout << "len: " << len << "\t" << boost::system::system_error(error).what() << std::endl;
             Mat maskR = getMatFromBitBuffer(buf.c_array());
+            if(maskR.rows!=0 and maskR.cols!=0)
+            {
+                imshow(BINARY_MASK_R,maskR);
 
-            imshow(BINARY_MASK_R,maskR);
-
+            }
             waitKey(1000/FPS);
+
         }
     }
     catch (std::exception& e)
