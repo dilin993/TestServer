@@ -13,6 +13,9 @@
 using boost::asio::ip::tcp;
 using namespace cv;
 
+boost::array<unsigned char, N> buf;
+const char *BINARY_MASK_R = "Binary Mask Recieved";
+
 
 Mat getMatFromBitBuffer(unsigned char *buffer)
 {
@@ -47,13 +50,25 @@ Mat getMatFromBitBuffer(unsigned char *buffer)
     return binMask;
 }
 
+void read_handler(const boost::system::error_code &ec,
+                  std::size_t bytes_transferred)
+{
+    if (!ec)
+    {
+        Mat maskR = getMatFromBitBuffer(buf.c_array());
+        if(bytes_transferred==N)
+        {
+            imshow(BINARY_MASK_R,maskR);
+
+        }
+    }
+}
+
 
 int main()
 {
     try
     {
-        const char *BINARY_MASK_R = "Binary Mask Recieved";
-
         namedWindow(BINARY_MASK_R, CV_WINDOW_AUTOSIZE);
 
         boost::asio::io_service io_service;
@@ -63,18 +78,10 @@ int main()
         for (;;)
         {
             boost::system::error_code error;
-            boost::array<unsigned char, N> buf;
 //            size_t len = socket.read_some(boost::asio::buffer(buf,N), error);
-            size_t len = boost::asio::read(socket,boost::asio::buffer(buf,N), error);
-            std::cout << "len: " << len << "\t" << boost::system::system_error(error).what() << std::endl;
-            Mat maskR = getMatFromBitBuffer(buf.c_array());
-            if(len==N)
-            {
-                imshow(BINARY_MASK_R,maskR);
-
-            }
-            waitKey(1000/FPS);
-
+//            size_t len = boost::asio::read(socket,boost::asio::buffer(buf,N), error);
+            socket.async_read_some(boost::asio::buffer(buf,N),read_handler);
+//            std::cout << "len: " << len << "\t" << boost::system::system_error(error).what() << std::endl;
         }
     }
     catch (std::exception& e)
