@@ -4,8 +4,10 @@
 #include<boost/array.hpp>
 #include<opencv2/opencv.hpp>
 
+#define WIDTH 320
+#define HEIGHT 240
 #define BUF_SIZE(W,H) (W*H)/8+5
-#define N BUF_SIZE(640,480)
+#define N BUF_SIZE(WIDTH,HEIGHT)
 #define FPS 30
 
 using boost::asio::ip::tcp;
@@ -66,7 +68,7 @@ int main()
             size_t len = boost::asio::read(socket,boost::asio::buffer(buf,N), error);
             std::cout << "len: " << len << "\t" << boost::system::system_error(error).what() << std::endl;
             Mat maskR = getMatFromBitBuffer(buf.c_array());
-            if(maskR.rows!=0 and maskR.cols!=0)
+            if(len==N)
             {
                 imshow(BINARY_MASK_R,maskR);
 
