@@ -12,18 +12,24 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
-#include<opencv2/opencv.hpp
+#include<opencv2/opencv.hpp>
 #include "MyTypes.h"
 
 using boost::asio::ip::tcp;
 
+class ConnectionError:public std::exception
+{
+    const char * what () const throw () {
+        return "Connection does not exist.";
+    }
+};
 
 cv::Mat getMatFromBitBuffer(std::array<uchar,N> buffer)
 {
     int rows = (buffer[1] << 8) + buffer[0];
     int cols = (buffer[3] << 8) + buffer[2];
 
-    assert(rows>=0 && cols>=0);
+    //assert(rows>=0 && cols>=0);
 
     cv::Mat binMask(rows,cols,CV_8UC1);
 
@@ -92,7 +98,15 @@ private:
                                     boost::bind(&tcp_connection::handle_read, shared_from_this(),
                                                 boost::asio::placeholders::error,
                                                 boost::asio::placeholders::bytes_transferred));
+
         }
+        else if(error==boost::asio::error::eof)
+        {
+            socket().close();
+        }
+        std::cout << "Read " << bytes_transferred << " bytes.\terror: " <<
+                  boost::system::system_error(error).what() << std::endl;
+
     }
 
     tcp::socket socket_;
@@ -108,6 +122,25 @@ public:
             : acceptor_(io_service, tcp::endpoint(tcp::v4(), port))
     {
         start_accept();
+    }
+
+    int connection_count()
+    {
+        refresh_connections();
+        return connections.size();
+    }
+
+    cv::Mat getRecivedMask(int connectionNo)
+    {
+        if(connectionNo>0 and connectionNo<connection_count())
+        {
+            connections[connectionNo]->start();
+            return connections[connectionNo]->binMask;
+        }
+        else
+        {
+            throw ConnectionError();
+        }
     }
 
 private:
@@ -127,12 +160,28 @@ private:
         if (!error)
         {
             new_connection->start();
+            connections.push_back(new_connection);
+            std::cout << "connection count: " << connection_count() << std::endl;
         }
 
         start_accept();
     }
 
+    void refresh_connections()
+    {
+        // remove unopened connections
+        for(int i=0;i<connections.size();i++)
+        {
+            if(!connections[i]->socket().is_open())
+            {
+                connections.erase(connections.begin()+i);
+                i--;
+            }
+        }
+    }
+
     tcp::acceptor acceptor_;
+    std::vector<tcp_connection::pointer> connections;
 };
 
 
