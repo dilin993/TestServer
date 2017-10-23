@@ -47,7 +47,7 @@ int main(void)
             try
             {
                 server.receiveBinMask(imgThresh);
-                cv::imshow("imgThresh", imgThresh);
+                //cv::imshow("imgThresh", imgThresh);
             }
             catch (ReceiveException& e)
             {
@@ -81,7 +81,7 @@ int main(void)
 
             cv::findContours(imgThreshCopy, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-            drawAndShowContours(imgThresh.size(), contours, "imgContours");
+            //drawAndShowContours(imgThresh.size(), contours, "imgContours");
 
             std::vector<std::vector<cv::Point> > convexHulls(contours.size());
 
