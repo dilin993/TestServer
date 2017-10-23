@@ -89,7 +89,7 @@ int main(void)
                 cv::convexHull(contours[i], convexHulls[i]);
             }
 
-            drawAndShowContours(imgThresh.size(), convexHulls, "imgConvexHulls");
+            //drawAndShowContours(imgThresh.size(), convexHulls, "imgConvexHulls");
 
             for (auto &convexHull : convexHulls) {
                 Blob possibleBlob(convexHull);
@@ -105,7 +105,7 @@ int main(void)
                 }
             }
 
-            drawAndShowContours(imgThresh.size(), currentFrameBlobs, "imgCurrentFrameBlobs");
+            //drawAndShowContours(imgThresh.size(), currentFrameBlobs, "imgCurrentFrameBlobs");
 
             if (blnFirstFrame == true) {
                 for (auto &currentFrameBlob : currentFrameBlobs) {
@@ -116,7 +116,7 @@ int main(void)
                 matchCurrentFrameBlobsToExistingBlobs(blobs, currentFrameBlobs);
             }
 
-            drawAndShowContours(imgThresh.size(), blobs, "imgBlobs");
+            //drawAndShowContours(imgThresh.size(), blobs, "imgBlobs");
 
             Mat img(HEIGHT,WIDTH,CV_8UC3, Scalar(255, 255, 255));
 
