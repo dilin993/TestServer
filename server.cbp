@@ -86,22 +86,28 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/dilin/fyp/TestSever/src/BackSubDetector.cpp">
+		<Unit filename="/home/dilin/fyp/TestSever/src/BGSDetector.cpp">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dilin/fyp/TestSever/src/BackSubDetector.h">
+		<Unit filename="/home/dilin/fyp/TestSever/src/BGSDetector.h">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dilin/fyp/TestSever/src/Blob.cpp">
+		<Unit filename="/home/dilin/fyp/TestSever/src/DataAssociation.cpp">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dilin/fyp/TestSever/src/Blob.h">
+		<Unit filename="/home/dilin/fyp/TestSever/src/DataAssociation.h">
 			<Option target="server"/>
 		</Unit>
 		<Unit filename="/home/dilin/fyp/TestSever/src/Detector.cpp">
 			<Option target="server"/>
 		</Unit>
 		<Unit filename="/home/dilin/fyp/TestSever/src/Detector.h">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dilin/fyp/TestSever/src/KalmanTracker.cpp">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dilin/fyp/TestSever/src/KalmanTracker.h">
 			<Option target="server"/>
 		</Unit>
 		<Unit filename="/home/dilin/fyp/TestSever/src/MyTypes.h">
@@ -111,6 +117,18 @@
 			<Option target="server"/>
 		</Unit>
 		<Unit filename="/home/dilin/fyp/TestSever/src/Server.h">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dilin/fyp/TestSever/src/Tracker.cpp">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dilin/fyp/TestSever/src/Tracker.h">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dilin/fyp/TestSever/src/hungarian.cpp">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dilin/fyp/TestSever/src/hungarian.h">
 			<Option target="server"/>
 		</Unit>
 		<Unit filename="/home/dilin/fyp/TestSever/src/main.cpp">

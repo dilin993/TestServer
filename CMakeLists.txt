@@ -13,8 +13,6 @@ file(GLOB SOURCE_FILES
         "src/*.hpp"
         )
 
-#set(SOURCE_FILES src/main.cpp src/Server.cpp src/Server.h src/MyTypes.h)
-
-add_executable(server ${SOURCE_FILES} src/BackSubDetector.cpp src/BackSubDetector.h src/main.cpp)
+add_executable(server ${SOURCE_FILES})
 
 target_link_libraries(server ${OpenCV_LIBS} ${Boost_LIBRARIES} -lpthread)
